@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.IO;
 
 class BidirectionalClient
 {
@@ -43,7 +44,6 @@ class BidirectionalClient
             Console.WriteLine(e.ToString());
         }
     }
-
     public static void ReceiveMessage()
     {
         try
@@ -53,6 +53,10 @@ class BidirectionalClient
                 byte[] bytes = new byte[1024];
                 int bytesRec = sender.Receive(bytes);
                 string message = Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                if (message == "receive video")
+                {
+                    ReceiveVideo();
+                }
                 Console.WriteLine("Received from server: " + message);
             }
         }
@@ -61,6 +65,31 @@ class BidirectionalClient
             Console.WriteLine("Server disconnected.");
         }
     }
+
+    // Receive and play the streamed video data
+    public static void ReceiveVideo()
+    {
+        try
+        {
+            while (true)
+            {
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = sender.Receive(buffer, 0, buffer.Length, SocketFlags.None)) > 0)
+                {
+                    using (FileStream fs = new FileStream("received_video.mp4", FileMode.Append, FileAccess.Write))
+                    {
+                        fs.Write(buffer, 0, bytesRead);
+                    }
+                }
+            }
+        }
+        catch (SocketException)
+        {
+            Console.WriteLine("Server disconnected.");
+        }
+    }
+
 
     public static void SendMessage(string message)
     {

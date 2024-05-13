@@ -16,6 +16,8 @@ class BidirectionalClient
 
     public static void StartClient()
     {
+        Console.WriteLine("You are by default in a real time chat and you can run any of this commands in the chat:\n 1- if you want to get a file from the server enter: request file\n 2- if you want to get a video from the server enter: request video\n 3- if you want to get a image from the server enter: request image\n");
+
         try
         {
             // Connect to the server
@@ -57,6 +59,14 @@ class BidirectionalClient
                 {
                     ReceiveVideo();
                 }
+                if (message == "receive file")
+                {
+                    ReceiveFile();
+                }
+                if (message == "receive image")
+                {
+                    ReceiveImage();
+                }
                 Console.WriteLine("Received from server: " + message);
             }
         }
@@ -65,22 +75,17 @@ class BidirectionalClient
             Console.WriteLine("Server disconnected.");
         }
     }
-
-    // Receive and play the streamed video data
     public static void ReceiveVideo()
     {
         try
         {
-            while (true)
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = sender.Receive(buffer, 0, buffer.Length, SocketFlags.None)) > 0)
             {
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = sender.Receive(buffer, 0, buffer.Length, SocketFlags.None)) > 0)
+                using (FileStream fs = new FileStream("received_video.mp4", FileMode.Append, FileAccess.Write))
                 {
-                    using (FileStream fs = new FileStream("received_video.mp4", FileMode.Append, FileAccess.Write))
-                    {
-                        fs.Write(buffer, 0, bytesRead);
-                    }
+                    fs.Write(buffer, 0, bytesRead);
                 }
             }
         }
@@ -89,8 +94,44 @@ class BidirectionalClient
             Console.WriteLine("Server disconnected.");
         }
     }
-
-
+    public static void ReceiveFile()
+    {
+        try
+        {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = sender.Receive(buffer, 0, buffer.Length, SocketFlags.None)) > 0)
+            {
+                using (FileStream fs = new FileStream("received_file.txt", FileMode.Append, FileAccess.Write))
+                {
+                    fs.Write(buffer, 0, bytesRead);
+                }
+            }
+        }
+        catch (SocketException)
+        {
+            Console.WriteLine("Server disconnected.");
+        }
+    }
+    public static void ReceiveImage()
+    {
+        try
+        {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = sender.Receive(buffer, 0, buffer.Length, SocketFlags.None)) > 0)
+            {
+                using (FileStream fs = new FileStream("received_image.png", FileMode.Append, FileAccess.Write))
+                {
+                    fs.Write(buffer, 0, bytesRead);
+                }
+            }
+        }
+        catch (SocketException)
+        {
+            Console.WriteLine("Server disconnected.");
+        }
+    }
     public static void SendMessage(string message)
     {
         byte[] msg = Encoding.ASCII.GetBytes(message);

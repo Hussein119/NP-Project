@@ -69,33 +69,43 @@ class BidirectionalServer
                 byte[] bytes = new byte[1024];
                 int bytesRec = clientSocket.Receive(bytes);
                 string message = Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                if (message == "request dirs")
+                switch (message)
                 {
-                    SendMessage("Enter the path you want: ");
-                    byte[] bytesForDir = new byte[1024];
-                    int bytesRecForDir = clientSocket.Receive(bytesForDir);
-                    string directoryPath = Encoding.ASCII.GetString(bytesForDir, 0, bytesRecForDir);
-                    SendDirectoryListing(directoryPath);
+                    case "request dirs":
+                        SendMessage("Enter the path you want: ");
+                        byte[] bytesForDir = new byte[1024];
+                        int bytesRecForDir = clientSocket.Receive(bytesForDir);
+                        string directoryPath = Encoding.ASCII.GetString(bytesForDir, 0, bytesRecForDir);
+                        SendDirectoryListing(directoryPath);
+                        break;
+                    case "request file":
+                        SendMessage("Enter the path of a file you want: ");
+                        byte[] bytesForFile = new byte[1024];
+                        int bytesRecForFile = clientSocket.Receive(bytesForFile);
+                        string filePath = Encoding.ASCII.GetString(bytesForFile, 0, bytesRecForFile);
+                        SendMessage("receive file");
+                        SendFile(filePath);
+                        break;
+                    case "request video":
+                        SendMessage("Enter the path of a file you want: ");
+                        byte[] bytesForVid = new byte[1024];
+                        int bytesRecForVid = clientSocket.Receive(bytesForVid);
+                        string directoryVideoPath = Encoding.ASCII.GetString(bytesForVid, 0, bytesRecForVid);
+                        SendMessage("receive video");
+                        SendVideo(directoryVideoPath);
+                        break;
+                    case "request image":
+                        SendMessage("Enter the path of a file you want: ");
+                        byte[] bytesForImg = new byte[1024];
+                        int bytesRecForImg = clientSocket.Receive(bytesForImg);
+                        string directoryImagePath = Encoding.ASCII.GetString(bytesForImg, 0, bytesRecForImg);
+                        SendMessage("receive image");
+                        SendImage(directoryImagePath);
+                        break;
+                    default:
+                        Console.WriteLine("Received from client: " + message);
+                        break;
                 }
-                if (message == "request file")
-                {
-                    SendMessage("Enter the path of a file you want: ");
-                    byte[] bytesForDir = new byte[1024];
-                    int bytesRecForDir = clientSocket.Receive(bytesForDir);
-                    string directoryPath = Encoding.ASCII.GetString(bytesForDir, 0, bytesRecForDir);
-                    SendFile(directoryPath);
-                }
-
-                if (message == "request video")
-                {
-                    SendMessage("Enter the path of a file you want: ");
-                    byte[] bytesForVid = new byte[1024];
-                    int bytesRecForVid = clientSocket.Receive(bytesForVid);
-                    string directoryPath = Encoding.ASCII.GetString(bytesForVid, 0, bytesRecForVid);
-                    SendMessage("receive video");
-                    SendVideo(directoryPath);
-                }
-                Console.WriteLine("Received from client: " + message);
             }
         }
         catch (SocketException)
@@ -144,13 +154,23 @@ class BidirectionalServer
             // Check if the file exists
             if (File.Exists(filePath))
             {
-                // Read the contents of the file
-                byte[] fileData = File.ReadAllBytes(filePath);
+                // // Read the contents of the file
+                // byte[] fileData = File.ReadAllBytes(filePath);
 
-                // Send the file data to the client
-                clientSocket.Send(fileData);
+                // // Send the file data to the client
+                // clientSocket.Send(fileData);
 
-                Console.WriteLine("File sent successfully.");
+                // Console.WriteLine("File sent successfully.");
+
+                using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                {
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
+                    {
+                        clientSocket.Send(buffer, 0, bytesRead, SocketFlags.None);
+                    }
+                }
             }
             else
             {
@@ -181,6 +201,26 @@ class BidirectionalServer
         catch (Exception ex)
         {
             Console.WriteLine("Error streaming video: " + ex.Message);
+        }
+    }
+
+    public static void SendImage(string imageFilePath)
+    {
+        try
+        {
+            using (FileStream fs = new FileStream(imageFilePath, FileMode.Open, FileAccess.Read))
+            {
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    clientSocket.Send(buffer, 0, bytesRead, SocketFlags.None);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error sending image: " + ex.Message);
         }
     }
 

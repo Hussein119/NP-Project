@@ -1,0 +1,79 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\client\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{64045E4B-59B6-423B-AB51-0A915BF95837}|client\\client.csproj|d:\\collage\\8th\\network programming\\project\\gui app\\client\\client\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{64045E4B-59B6-423B-AB51-0A915BF95837}|client\\client.csproj|solutionrelative:client\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64045E4B-59B6-423B-AB51-0A915BF95837}|client\\client.csproj|d:\\collage\\8th\\network programming\\project\\gui app\\client\\client\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64045E4B-59B6-423B-AB51-0A915BF95837}|client\\client.csproj|solutionrelative:client\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Form1.cs [Design]",
+              "DocumentMoniker": "D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\client\\client\\Form1.cs",
+              "RelativeDocumentMoniker": "client\\Form1.cs",
+              "ToolTip": "D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\client\\client\\Form1.cs [Design]",
+              "RelativeToolTip": "client\\Form1.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-14T15:39:11.116Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\client\\client\\Form1.cs",
+              "RelativeDocumentMoniker": "client\\Form1.cs",
+              "ToolTip": "D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\client\\client\\Form1.cs",
+              "RelativeToolTip": "client\\Form1.cs",
+              "ViewState": "AQIAABYBAAAAAAAAAAD4vx4BAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-14T09:23:48.744Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 272,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{28836128-fc2c-11d2-a433-00c04f72d18a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\client.exe
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\client.deps.json
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\client.runtimeconfig.json
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\client.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\client.pdb
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\client.Form1.resources
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\client.csproj.GenerateResource.cache
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\client.GeneratedMSBuildEditorConfig.editorconfig
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\client.AssemblyInfoInputs.cache
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\client.AssemblyInfo.cs
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\client.csproj.CoreCompileInputs.cache
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\client.sourcelink.json
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\client.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\refint\client.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\client.pdb
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\client.genruntimeconfig.cache
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\ref\client.dll

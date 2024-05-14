@@ -1,0 +1,17 @@
+D:\Collage\8th\Network Programming\Project\GUI app\server\server\bin\Debug\net8.0-windows\server.exe
+D:\Collage\8th\Network Programming\Project\GUI app\server\server\bin\Debug\net8.0-windows\server.deps.json
+D:\Collage\8th\Network Programming\Project\GUI app\server\server\bin\Debug\net8.0-windows\server.runtimeconfig.json
+D:\Collage\8th\Network Programming\Project\GUI app\server\server\bin\Debug\net8.0-windows\server.dll
+D:\Collage\8th\Network Programming\Project\GUI app\server\server\bin\Debug\net8.0-windows\server.pdb
+D:\Collage\8th\Network Programming\Project\GUI app\server\server\obj\Debug\net8.0-windows\server.Form1.resources
+D:\Collage\8th\Network Programming\Project\GUI app\server\server\obj\Debug\net8.0-windows\server.csproj.GenerateResource.cache
+D:\Collage\8th\Network Programming\Project\GUI app\server\server\obj\Debug\net8.0-windows\server.GeneratedMSBuildEditorConfig.editorconfig
+D:\Collage\8th\Network Programming\Project\GUI app\server\server\obj\Debug\net8.0-windows\server.AssemblyInfoInputs.cache
+D:\Collage\8th\Network Programming\Project\GUI app\server\server\obj\Debug\net8.0-windows\server.AssemblyInfo.cs
+D:\Collage\8th\Network Programming\Project\GUI app\server\server\obj\Debug\net8.0-windows\server.csproj.CoreCompileInputs.cache
+D:\Collage\8th\Network Programming\Project\GUI app\server\server\obj\Debug\net8.0-windows\server.sourcelink.json
+D:\Collage\8th\Network Programming\Project\GUI app\server\server\obj\Debug\net8.0-windows\server.dll
+D:\Collage\8th\Network Programming\Project\GUI app\server\server\obj\Debug\net8.0-windows\refint\server.dll
+D:\Collage\8th\Network Programming\Project\GUI app\server\server\obj\Debug\net8.0-windows\server.pdb
+D:\Collage\8th\Network Programming\Project\GUI app\server\server\obj\Debug\net8.0-windows\server.genruntimeconfig.cache
+D:\Collage\8th\Network Programming\Project\GUI app\server\server\obj\Debug\net8.0-windows\ref\server.dll

@@ -32,6 +32,7 @@
             MessageArea = new TextBox();
             send = new Button();
             listen = new Button();
+            listenStr = new Button();
             SuspendLayout();
             // 
             // ChatArea
@@ -72,12 +73,24 @@
             listen.UseVisualStyleBackColor = true;
             listen.Click += listen_Click;
             // 
+            // listenStr
+            // 
+            listenStr.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            listenStr.Location = new Point(645, 113);
+            listenStr.Name = "listenStr";
+            listenStr.Size = new Size(128, 67);
+            listenStr.TabIndex = 4;
+            listenStr.Text = "listenStr";
+            listenStr.UseVisualStyleBackColor = true;
+            listenStr.Click += listenStr_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
             ClientSize = new Size(806, 570);
+            Controls.Add(listenStr);
             Controls.Add(listen);
             Controls.Add(send);
             Controls.Add(MessageArea);
@@ -94,5 +107,6 @@
         private TextBox MessageArea;
         private Button send;
         private Button listen;
+        private Button listenStr;
     }
 }

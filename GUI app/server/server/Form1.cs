@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -8,10 +9,11 @@ namespace server
     public partial class Form1 : Form
     {
         Socket server;
-        Socket client;
-        NetworkStream ns;
-        StreamReader sr;
-        StreamWriter sw;
+
+        private Dictionary<Socket, int> clientIds = new Dictionary<Socket, int>();
+        private int nextClientId = 1;
+
+        List<StreamWriter> clientWriters = new List<StreamWriter>();
 
         public Form1()
         {
@@ -29,12 +31,23 @@ namespace server
 
                 listen.Enabled = false;
 
-                client = await Task.Run(() => server.Accept());
-                ns = new NetworkStream(client);
-                sr = new StreamReader(ns, Encoding.UTF8);
-                sw = new StreamWriter(ns, Encoding.UTF8);
+                // Accept incoming connections in a separate thread
+                Thread acceptThread = new Thread(() =>
+                {
+                    while (true)
+                    {
+                        Socket client = server.Accept();
+                        lock (clientIds)
+                        {
+                            clientIds[client] = nextClientId++;
+                        }
 
-                ReceiveMessages();
+                        // Start a new thread to handle client communication
+                        Thread receiveThread = new Thread(() => ReceiveMessages(client));
+                        receiveThread.Start();
+                    }
+                });
+                acceptThread.Start();
             }
             catch (Exception ex)
             {
@@ -43,61 +56,70 @@ namespace server
             }
         }
 
-        private async void ReceiveMessages()
+        private void HandleClient(Socket client)
         {
             try
             {
+                // Initialize network stream and writers for the client
+                NetworkStream ns = new NetworkStream(client);
+                StreamWriter sw = new StreamWriter(ns, Encoding.UTF8) { AutoFlush = true };
+                clientWriters.Add(sw);
+
+                // Start a separate thread to handle client messages
+                Thread receiveThread = new Thread(() => ReceiveMessages(client));
+                receiveThread.Start();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error handling client: " + ex.Message);
+            }
+        }
+
+        private async void ReceiveMessages(Socket client)
+        {
+            try
+            {
+                NetworkStream ns = new NetworkStream(client);
+                StreamReader sr = new StreamReader(ns, Encoding.UTF8);
                 string tmp;
+                int clientId;
+                lock (clientIds)
+                {
+                    clientId = clientIds[client];
+                }
                 while ((tmp = await sr.ReadLineAsync()) != null)
                 {
                     if (tmp.StartsWith("request file: "))
                     {
                         string filePath = tmp.Substring("request file: ".Length).Trim();
+                        string fileType = Path.GetExtension(filePath).TrimStart('.');
 
-                        string message = "receive file";
-                        SendMessage(message);
+                        string message = $"receive file ({fileType})";
+                        SendMessageToClient(client, message);
 
-                        SendFile(filePath);
+                        SendFile(client, filePath);
                     }
                     else if (tmp.StartsWith("request directory: "))
                     {
                         string directoryPath = tmp.Substring("request directory: ".Length).Trim();
 
                         string message = "receive directory";
-                        SendMessage(message);
+                        SendMessageToClient(client, message);
 
-                        SendDirectoryData(directoryPath);
+                        SendDirectoryData(client, directoryPath);
                     }
                     else if (tmp.StartsWith("download directory: "))
                     {
                         string directoryPath = tmp.Substring("download directory: ".Length).Trim();
 
                         string message = "receive download directory";
-                        SendMessage(message);
+                        SendMessageToClient(client, message);
 
-                        SendDirectory(directoryPath);
-                    }
-                    else if (tmp.StartsWith("request video: "))
-                    {
-                        string videoPath = tmp.Substring("request video: ".Length).Trim();
-
-                        string message = "receive video";
-                        SendMessage(message);
-
-                        SendVideo(videoPath);
-                    }
-                    else if (tmp.StartsWith("request image: "))
-                    {
-                        string imagePath = tmp.Substring("request image: ".Length).Trim();
-
-                        string message = "receive image";
-                        SendMessage(message);
-
-                        SendImage(imagePath);
+                        SendDirectory(client, directoryPath);
                     }
                     else
                     {
-                        tmp = "Client: " + tmp;
+                        tmp = $"Client {clientId}: " + tmp;
                         UpdateChat(tmp);
                     }
                 }
@@ -108,22 +130,35 @@ namespace server
             }
         }
 
-        private void SendFile(string filePath)
+        private void SendMessageToClient(Socket client, string message)
+        {
+            try
+            {
+                NetworkStream ns = new NetworkStream(client);
+                StreamWriter sw = new StreamWriter(ns, Encoding.UTF8) { AutoFlush = true };
+                sw.WriteLine(message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error sending message to client: " + ex.Message);
+            }
+        }
+
+        private void SendFile(Socket client, string filePath)
         {
             try
             {
                 if (File.Exists(filePath))
                 {
                     byte[] fileBytes = File.ReadAllBytes(filePath);
-
+                    NetworkStream ns = new NetworkStream(client);
                     ns.Write(fileBytes, 0, fileBytes.Length);
 
                     UpdateChat("File sent: " + filePath);
                 }
                 else
                 {
-                    sw.WriteLine("File not found: " + filePath);
-                    sw.Flush();
+                    SendMessageToClient(client, "File not found: " + filePath);
                 }
             }
             catch (Exception ex)
@@ -132,7 +167,7 @@ namespace server
             }
         }
 
-        private void SendDirectoryData(string directoryPath)
+        private void SendDirectoryData(Socket client, string directoryPath)
         {
             try
             {
@@ -162,7 +197,8 @@ namespace server
                 MessageBox.Show("Error sending directory files to client: " + ex.Message);
             }
         }
-        private void SendDirectory(string directoryPath)
+
+        private void SendDirectory(Socket client, string directoryPath)
         {
             try
             {
@@ -192,73 +228,6 @@ namespace server
             catch (Exception ex)
             {
                 MessageBox.Show("Error sending directory files to client: " + ex.Message);
-            }
-        }
-
-
-        private void SendVideo(string videoPath)
-        {
-            try
-            {
-                // Check if the video file exists
-                if (File.Exists(videoPath))
-                {
-                    // Read the video file content into a byte array
-                    byte[] videoBytes = File.ReadAllBytes(videoPath);
-
-                    // Send the video size to the client
-                    sw.WriteLine(videoBytes.Length);
-                    sw.Flush();
-
-                    // Send the video content to the client
-                    ns.Write(videoBytes, 0, videoBytes.Length);
-
-                    // Log the successful video transmission
-                    UpdateChat("Video sent: " + videoPath);
-                }
-                else
-                {
-                    // Notify the client that the video file does not exist
-                    sw.WriteLine("Video file not found: " + videoPath);
-                    sw.Flush();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error sending video to client: " + ex.Message);
-            }
-        }
-
-        private void SendImage(string imagePath)
-        {
-            try
-            {
-                // Check if the image file exists
-                if (File.Exists(imagePath))
-                {
-                    // Read the image file content into a byte array
-                    byte[] imageBytes = File.ReadAllBytes(imagePath);
-
-                    // Send the image size to the client
-                    sw.WriteLine(imageBytes.Length);
-                    sw.Flush();
-
-                    // Send the image content to the client
-                    ns.Write(imageBytes, 0, imageBytes.Length);
-
-                    // Log the successful image transmission
-                    UpdateChat("Image sent: " + imagePath);
-                }
-                else
-                {
-                    // Notify the client that the image file does not exist
-                    sw.WriteLine("Image file not found: " + imagePath);
-                    sw.Flush();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error sending image to client: " + ex.Message);
             }
         }
 
@@ -281,19 +250,14 @@ namespace server
         {
             try
             {
-                if (sw != null)
+                foreach (var client in clientIds.Keys)
                 {
-                    sw.WriteLine(message);
-                    sw.Flush();
-                }
-                else
-                {
-                    MessageBox.Show("StreamWriter is not initialized.");
+                    SendMessageToClient(client, message);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error sending message to client: " + ex.Message);
+                MessageBox.Show("Error sending message to clients: " + ex.Message);
             }
         }
 
@@ -306,6 +270,60 @@ namespace server
                 UpdateChat("Me (server): " + message);
                 MessageArea.Text = "";
             }
+        }
+
+        private void StartVlcStream()
+        {
+            // Establish server socket
+            try
+            {
+                IPEndPoint ipep = new IPEndPoint(IPAddress.Any, 1234); // Listen on any available IP address
+                Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                server.Bind(ipep);
+                server.Listen(10);
+
+                listenStr.Enabled = false;
+
+                // Accept client connections asynchronously
+                Task.Run(async () =>
+                {
+                    while (true)
+                    {
+                        Socket client = await server.AcceptAsync();
+                        HandleVLCClient(client);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error starting server or VLC stream: " + ex.Message);
+            }
+        }
+
+        private async void HandleVLCClient(Socket client)
+        {
+            try
+            {
+                // Read client request
+                NetworkStream ns = new NetworkStream(client);
+                StreamReader sr = new StreamReader(ns, Encoding.UTF8);
+
+                // Send the video file to the client
+                string videoFilePath = "D:\\Collage\\8th\\Network Programming\\Project\\test.mp4";
+                byte[] videoBytes = File.ReadAllBytes(videoFilePath);
+                await ns.WriteAsync(videoBytes, 0, videoBytes.Length);
+                
+                // Close the connection
+                client.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error handling client: " + ex.Message);
+            }
+        }
+        private void listenStr_Click(object sender, EventArgs e)
+        {
+            StartVlcStream();
         }
     }
 }

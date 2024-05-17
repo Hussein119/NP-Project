@@ -36,9 +36,8 @@
             Directories = new Label();
             label1 = new Label();
             label2 = new Label();
-            label3 = new Label();
-            label4 = new Label();
             label5 = new Label();
+            playStream = new Button();
             SuspendLayout();
             // 
             // ChatArea
@@ -60,7 +59,7 @@
             // send
             // 
             send.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            send.Location = new Point(733, 482);
+            send.Location = new Point(651, 482);
             send.Name = "send";
             send.Size = new Size(123, 56);
             send.TabIndex = 2;
@@ -71,7 +70,7 @@
             // connect
             // 
             connect.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            connect.Location = new Point(733, 12);
+            connect.Location = new Point(651, 12);
             connect.Name = "connect";
             connect.Size = new Size(123, 77);
             connect.TabIndex = 3;
@@ -110,38 +109,31 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(12, 388);
+            label2.Location = new Point(12, 390);
             label2.Name = "label2";
-            label2.Size = new Size(446, 20);
+            label2.Size = new Size(565, 20);
             label2.TabIndex = 7;
-            label2.Text = "1- if you want to get a file from the server enter: request file: PATH";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(12, 408);
-            label3.Name = "label3";
-            label3.Size = new Size(478, 20);
-            label3.TabIndex = 8;
-            label3.Text = "2- if you want to get a video from the server enter: request video: PATH";
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(12, 428);
-            label4.Name = "label4";
-            label4.Size = new Size(488, 20);
-            label4.TabIndex = 9;
-            label4.Text = "3- if you want to get a image from the server enter: request image: PATH";
+            label2.Text = "1- if you want to get a file (any type of files) from the server enter: request file: PATH";
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(12, 448);
+            label5.Location = new Point(12, 422);
             label5.Name = "label5";
             label5.Size = new Size(505, 20);
             label5.TabIndex = 10;
-            label5.Text = "4- if you want to get a image from the server enter: request directory: PATH";
+            label5.Text = "2- if you want to get a image from the server enter: request directory: PATH";
+            // 
+            // playStream
+            // 
+            playStream.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            playStream.Location = new Point(793, 482);
+            playStream.Name = "playStream";
+            playStream.Size = new Size(170, 56);
+            playStream.TabIndex = 11;
+            playStream.Text = "playStream";
+            playStream.UseVisualStyleBackColor = true;
+            playStream.Click += playStream_Click;
             // 
             // Form1
             // 
@@ -149,9 +141,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Lime;
             ClientSize = new Size(1022, 550);
+            Controls.Add(playStream);
             Controls.Add(label5);
-            Controls.Add(label4);
-            Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(Directories);
@@ -176,8 +167,7 @@
         private Label Directories;
         private Label label1;
         private Label label2;
-        private Label label3;
-        private Label label4;
         private Label label5;
+        private Button playStream;
     }
 }

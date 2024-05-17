@@ -3,7 +3,11 @@
   "WorkspaceRootPath": "D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\server\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{17EE2F5E-D28D-4920-86B5-7999F8F65BBF}|server\\server.csproj|d:\\collage\\8th\\network programming\\project\\gui app\\server\\server\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{17EE2F5E-D28D-4920-86B5-7999F8F65BBF}|server\\server.csproj|d:\\collage\\8th\\network programming\\project\\gui app\\server\\server\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{17EE2F5E-D28D-4920-86B5-7999F8F65BBF}|server\\server.csproj|solutionrelative:server\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{17EE2F5E-D28D-4920-86B5-7999F8F65BBF}|server\\server.csproj|D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\server\\server\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{17EE2F5E-D28D-4920-86B5-7999F8F65BBF}|server\\server.csproj|solutionrelative:server\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
@@ -27,14 +31,26 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\server\\server\\Form1.cs",
+              "RelativeDocumentMoniker": "server\\Form1.cs",
+              "ToolTip": "D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\server\\server\\Form1.cs",
+              "RelativeToolTip": "server\\Form1.cs",
+              "ViewState": "AQIAADsBAAAAAAAAAAAgwEYBAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-16T23:23:43.462Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Form1.cs [Design]",
               "DocumentMoniker": "D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\server\\server\\Form1.cs",
               "RelativeDocumentMoniker": "server\\Form1.cs",
               "ToolTip": "D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\server\\server\\Form1.cs [Design]",
               "RelativeToolTip": "server\\Form1.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-14T09:19:14.021Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2024-05-14T09:19:14.021Z"
             }
           ]
         },

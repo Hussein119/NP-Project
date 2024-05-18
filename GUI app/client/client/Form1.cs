@@ -165,6 +165,7 @@ namespace client
                     }
                 }
                 UpdateChat("File received: open this client\\client\\bin\\Debug\\net8.0-windows to see it");
+                MessageBox.Show("File received");
             }
             catch (Exception ex)
             {
@@ -188,55 +189,92 @@ namespace client
         }
         private void ReceiveDownloadDirectory()
         {
+            string targetPath = "D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\client\\client\\bin\\Debug\\net8.0-windows";
+            
             try
             {
-                StringBuilder directoryInfo = new StringBuilder();
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-
-                while ((bytesRead = ns.Read(buffer, 0, buffer.Length)) > 0)
+                // Receive the number of files
+                byte[] fileCountBytes = new byte[4];
+                int receivedBytes = server.Receive(fileCountBytes);
+                if (receivedBytes == 0)
                 {
-                    directoryInfo.Append(Encoding.UTF8.GetString(buffer, 0, bytesRead));
+                    throw new Exception("No data received for file count.");
+                }
+                int fileCount = BitConverter.ToInt32(fileCountBytes, 0);
+
+                for (int i = 0; i < fileCount; i++)
+                {
+                    // Receive relative path length
+                    byte[] relativePathLengthBytes = new byte[4];
+                    receivedBytes = server.Receive(relativePathLengthBytes);
+                    if (receivedBytes == 0)
+                    {
+                        throw new Exception("No data received for relative path length.");
+                    }
+                    int relativePathLength = BitConverter.ToInt32(relativePathLengthBytes, 0);
+
+                    // Receive relative path
+                    byte[] relativePathBytes = new byte[relativePathLength];
+                    receivedBytes = server.Receive(relativePathBytes);
+                    if (receivedBytes == 0)
+                    {
+                        throw new Exception("No data received for relative path.");
+                    }
+                    string relativePath = Encoding.UTF8.GetString(relativePathBytes);
+
+                    // Sanitize the relative path
+                    relativePath = relativePath.Replace("/", "\\");
+                    relativePath = relativePath.TrimEnd('\\');
+
+                    // Ensure the relative path does not contain invalid characters
+                    foreach (char invalidChar in Path.GetInvalidPathChars())
+                    {
+                        relativePath = relativePath.Replace(invalidChar, '_');
+                    }
+
+                    // Receive file size
+                    byte[] fileSizeBytes = new byte[4];
+                    receivedBytes = server.Receive(fileSizeBytes);
+                    if (receivedBytes == 0)
+                    {
+                        throw new Exception("No data received for file size.");
+                    }
+                    int fileSize = BitConverter.ToInt32(fileSizeBytes, 0);
+
+                    // Receive file content
+                    byte[] fileBytes = new byte[fileSize];
+                    int totalReceived = 0;
+                    while (totalReceived < fileSize)
+                    {
+                        receivedBytes = server.Receive(fileBytes, totalReceived, fileSize - totalReceived, SocketFlags.None);
+                        if (receivedBytes == 0)
+                        {
+                            throw new Exception("No data received for file content.");
+                        }
+                        totalReceived += receivedBytes;
+                    }
+
+                    // Recreate the directory structure
+                    string fullPath = Path.Combine(targetPath, relativePath);
+                    string directory = Path.GetDirectoryName(fullPath);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    // Write the file content
+                    File.WriteAllBytes(fullPath, fileBytes);
                 }
 
-                string receivedData = directoryInfo.ToString();
-
-                // Split the received data into lines
-                string[] lines = receivedData.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-
-                // Process each line to create files and folders
-                foreach (string line in lines)
-                {
-                    // Check if the line represents a file or directory
-                    if (line.StartsWith("Files:") || line.StartsWith("Directories:"))
-                    {
-                        // Skip the header lines
-                        continue;
-                    }
-
-                    // Check if the line represents a file or directory
-                    if (line.EndsWith("/"))
-                    {
-                        // Directory
-                        string directoryName = line.TrimEnd('/');
-                        Directory.CreateDirectory(directoryName);
-                    }
-                    else
-                    {
-                        // File
-                        string fileName = line;
-                        // Create an empty file
-                        File.Create(fileName).Close();
-                    }
-                }
-
-                UpdateDirectoryScreen(receivedData);
+                UpdateChat("Files successfully received: open this client\\client\\bin\\Debug\\net8.0-windows to see it");
+                MessageBox.Show("Directory and files successfully received");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error receiving directory information: " + ex.Message);
+                MessageBox.Show("Error receiving directory files from server: " + ex.Message);
             }
         }
+
 
         private async void playStream_Click(object sender, EventArgs e)
         {

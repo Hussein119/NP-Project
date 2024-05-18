@@ -38,6 +38,7 @@
             label2 = new Label();
             label5 = new Label();
             playStream = new Button();
+            label3 = new Label();
             SuspendLayout();
             // 
             // ChatArea
@@ -118,11 +119,11 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(12, 422);
+            label5.Location = new Point(12, 419);
             label5.Name = "label5";
-            label5.Size = new Size(505, 20);
+            label5.Size = new Size(556, 20);
             label5.TabIndex = 10;
-            label5.Text = "2- if you want to get a image from the server enter: request directory: PATH";
+            label5.Text = "2- if you want to get a directory data from the server enter: request directory: PATH";
             // 
             // playStream
             // 
@@ -135,12 +136,22 @@
             playStream.UseVisualStyleBackColor = true;
             playStream.Click += playStream_Click;
             // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(12, 448);
+            label3.Name = "label3";
+            label3.Size = new Size(604, 20);
+            label3.TabIndex = 12;
+            label3.Text = "3- if you want to get a files on a directory from the server enter: download directory: PATH";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Lime;
             ClientSize = new Size(1022, 550);
+            Controls.Add(label3);
             Controls.Add(playStream);
             Controls.Add(label5);
             Controls.Add(label2);
@@ -169,5 +180,6 @@
         private Label label2;
         private Label label5;
         private Button playStream;
+        private Label label3;
     }
 }

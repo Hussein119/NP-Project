@@ -202,34 +202,38 @@ namespace server
         {
             try
             {
-                string[] files = Directory.GetFiles(directoryPath);
-                string[] directories = Directory.GetDirectories(directoryPath);
+                // Get all files and directories
+                string[] files = Directory.GetFiles(directoryPath, "*", SearchOption.AllDirectories);
 
-                StringBuilder responseBuilder = new StringBuilder();
+                // Send the number of files
+                byte[] fileCountBytes = BitConverter.GetBytes(files.Length);
+                client.Send(fileCountBytes);
 
-                responseBuilder.AppendLine("Files:");
+                // Send each file
                 foreach (string file in files)
                 {
-                    responseBuilder.AppendLine(Path.GetFileName(file));
+                    // Send relative path
+                    string relativePath = Path.GetRelativePath(directoryPath, file);
+                    byte[] relativePathBytes = Encoding.UTF8.GetBytes(relativePath);
+                    byte[] relativePathLengthBytes = BitConverter.GetBytes(relativePathBytes.Length);
+                    client.Send(relativePathLengthBytes);
+                    client.Send(relativePathBytes);
+
+                    // Send file size
+                    byte[] fileBytes = File.ReadAllBytes(file);
+                    byte[] fileSizeBytes = BitConverter.GetBytes(fileBytes.Length);
+                    client.Send(fileSizeBytes);
+
+                    // Send file content
+                    client.Send(fileBytes);
                 }
-
-                responseBuilder.AppendLine("Directories:");
-                foreach (string dir in directories)
-                {
-                    responseBuilder.AppendLine(Path.GetFileName(dir) + "/");
-                }
-
-                string response = responseBuilder.ToString();
-
-                byte[] msg = Encoding.ASCII.GetBytes(response);
-
-                client.Send(msg);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error sending directory files to client: " + ex.Message);
             }
         }
+
 
         private void UpdateChat(string message)
         {

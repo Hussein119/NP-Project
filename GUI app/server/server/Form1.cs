@@ -19,6 +19,7 @@ namespace server
         public Form1()
         {
             InitializeComponent();
+            ChatArea.ReadOnly = true;
         }
 
         private async void listen_Click(object sender, EventArgs e)
@@ -197,21 +198,23 @@ namespace server
         {
             try
             {
-                string[] files = Directory.GetFiles(directoryPath);
-                string[] directories = Directory.GetDirectories(directoryPath);
-
                 StringBuilder responseBuilder = new StringBuilder();
 
+                // Getting files and their details
                 responseBuilder.AppendLine("Files:");
-                foreach (string file in files)
+                DirectoryInfo dirInfo = new DirectoryInfo(directoryPath);
+                FileInfo[] files = dirInfo.GetFiles();
+                foreach (FileInfo file in files)
                 {
-                    responseBuilder.AppendLine(Path.GetFileName(file));
+                    responseBuilder.AppendLine($"{file.Name} - Size: {file.Length} bytes - Last Modified: {file.LastWriteTime}");
                 }
 
+                // Getting directories and their details
                 responseBuilder.AppendLine("Directories:");
-                foreach (string dir in directories)
+                DirectoryInfo[] directories = dirInfo.GetDirectories();
+                foreach (DirectoryInfo dir in directories)
                 {
-                    responseBuilder.AppendLine(Path.GetFileName(dir) + "/");
+                    responseBuilder.AppendLine($"{dir.Name}/ - Last Modified: {dir.LastWriteTime}");
                 }
 
                 string response = responseBuilder.ToString();
@@ -267,12 +270,14 @@ namespace server
             {
                 ChatArea.Invoke((MethodInvoker)(() =>
                 {
-                    ChatArea.Text += message + Environment.NewLine;
+                    ChatArea.AppendText(message + Environment.NewLine);
+                    ChatArea.ScrollToCaret();
                 }));
             }
             else
             {
-                ChatArea.Text += message + Environment.NewLine;
+                ChatArea.AppendText(message + Environment.NewLine);
+                ChatArea.ScrollToCaret();
             }
         }
 

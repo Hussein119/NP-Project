@@ -15,6 +15,8 @@ namespace client
         public Form1()
         {
             InitializeComponent();
+            ChatArea.ReadOnly = true;
+            directoryScreen.ReadOnly = true;
         }
 
         private async void connect_Click(object sender, EventArgs e)
@@ -87,12 +89,14 @@ namespace client
             {
                 ChatArea.Invoke((MethodInvoker)(() =>
                 {
-                    ChatArea.Text += message + Environment.NewLine;
+                    ChatArea.AppendText(message + Environment.NewLine);
+                    ChatArea.ScrollToCaret();
                 }));
             }
             else
             {
-                ChatArea.Text += message + Environment.NewLine;
+                ChatArea.AppendText(message + Environment.NewLine);
+                ChatArea.ScrollToCaret();
             }
         }
 
@@ -102,12 +106,14 @@ namespace client
             {
                 directoryScreen.Invoke((MethodInvoker)(() =>
                 {
-                    directoryScreen.Text += message + Environment.NewLine;
+                    directoryScreen.AppendText(message + Environment.NewLine);
+                    directoryScreen.ScrollToCaret();
                 }));
             }
             else
             {
-                directoryScreen.Text += message + Environment.NewLine;
+                directoryScreen.AppendText(message + Environment.NewLine);
+                directoryScreen.ScrollToCaret();
             }
         }
 

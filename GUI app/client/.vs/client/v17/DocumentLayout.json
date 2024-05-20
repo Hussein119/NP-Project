@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\client\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{64045E4B-59B6-423B-AB51-0A915BF95837}|client\\client.csproj|D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\client\\client\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{64045E4B-59B6-423B-AB51-0A915BF95837}|client\\client.csproj|solutionrelative:client\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{64045E4B-59B6-423B-AB51-0A915BF95837}|client\\client.csproj|d:\\collage\\8th\\network programming\\project\\gui app\\client\\client\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{64045E4B-59B6-423B-AB51-0A915BF95837}|client\\client.csproj|solutionrelative:client\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64045E4B-59B6-423B-AB51-0A915BF95837}|client\\client.csproj|d:\\collage\\8th\\network programming\\project\\gui app\\client\\client\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{64045E4B-59B6-423B-AB51-0A915BF95837}|client\\client.csproj|solutionrelative:client\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,24 +18,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Form1.cs",
               "DocumentMoniker": "D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\client\\client\\Form1.cs",
               "RelativeDocumentMoniker": "client\\Form1.cs",
               "ToolTip": "D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\client\\client\\Form1.cs",
               "RelativeToolTip": "client\\Form1.cs",
-              "ViewState": "AQIAAFAAAAAAAAAAAAAgwFgAAAAcAAAA",
+              "ViewState": "AQIAAFwAAAAAAAAAAADgv2sAAAAQAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-16T23:20:10.492Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Form1.cs [Design]",
               "DocumentMoniker": "D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\client\\client\\Form1.cs",
               "RelativeDocumentMoniker": "client\\Form1.cs",

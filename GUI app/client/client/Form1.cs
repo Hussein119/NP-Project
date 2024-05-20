@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -142,26 +143,67 @@ namespace client
             }
         }
 
+        private void DecompressFile(string compressedFilePath, string decompressedFilePath)
+        {
+            using (FileStream compressedFileStream = new FileStream(compressedFilePath, FileMode.Open, FileAccess.Read))
+            {
+                using (FileStream decompressedFileStream = new FileStream(decompressedFilePath, FileMode.Create, FileAccess.Write))
+                {
+                    using (GZipStream decompressionStream = new GZipStream(compressedFileStream, CompressionMode.Decompress))
+                    {
+                        decompressionStream.CopyTo(decompressedFileStream);
+                    }
+                }
+            }
+        }
+
         private void ReceiveFile(string type)
         {
             try
             {
                 byte[] buffer = new byte[1024];
                 int bytesRead;
-                using (FileStream fs = new FileStream("received_file." + type, FileMode.Create, FileAccess.Write))
+                string compressedFilePath = "received_file." + type + ".gz";
+                string decompressedFilePath = "received_file." + type;
+
+                using (FileStream fs = new FileStream(compressedFilePath, FileMode.Create, FileAccess.Write))
                 {
                     while ((bytesRead = ns.Read(buffer, 0, buffer.Length)) > 0)
                     {
                         fs.Write(buffer, 0, bytesRead);
-                        if (ns.DataAvailable == false)
+                        if (!ns.DataAvailable)
                         {
                             // No more data available, assume end of file
                             break;
                         }
                     }
                 }
-                UpdateChat("File received: open this client\\client\\bin\\Debug\\net8.0-windows to see it");
-                MessageBox.Show("File received");
+
+                // Decompress the received file
+                DecompressFile(compressedFilePath, decompressedFilePath);
+
+                UpdateChat("File received and decompressed: " + decompressedFilePath);
+                MessageBox.Show("File received and decompressed");
+
+                // Clean up the compressed file after decompressing
+                if (File.Exists(compressedFilePath))
+                {
+                    File.Delete(compressedFilePath);
+                }
+
+                // if the file is an image show the image in pictureBox1
+                if (type == "jpg" || type == "jpeg" || type == "png")
+                {
+                    using (FileStream imageStream = new FileStream(decompressedFilePath, FileMode.Open, FileAccess.Read))
+                    {
+                        Image image = Image.FromStream(imageStream);
+                        pictureBox1.Invoke((MethodInvoker)delegate
+                        {
+                            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                            pictureBox1.Image = image;
+                        });
+                    }
+                }
             }
             catch (Exception ex)
             {

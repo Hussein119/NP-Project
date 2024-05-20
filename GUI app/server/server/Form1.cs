@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -144,17 +145,42 @@ namespace server
             }
         }
 
+        private void CompressFile(string filePath, string compressedFilePath)
+        {
+            using (FileStream originalFileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                using (FileStream compressedFileStream = new FileStream(compressedFilePath, FileMode.Create, FileAccess.Write))
+                {
+                    using (GZipStream compressionStream = new GZipStream(compressedFileStream, CompressionMode.Compress))
+                    {
+                        originalFileStream.CopyTo(compressionStream);
+                    }
+                }
+            }
+        }
+
         private void SendFile(Socket client, string filePath)
         {
             try
             {
                 if (File.Exists(filePath))
                 {
-                    byte[] fileBytes = File.ReadAllBytes(filePath);
+                    // compress the file before send it 
+                    string compressedFilePath = filePath + ".gz";
+                    CompressFile(filePath, compressedFilePath);
+
+                    // send the compressed file
+                    byte[] fileBytes = File.ReadAllBytes(compressedFilePath);
                     NetworkStream ns = new NetworkStream(client);
                     ns.Write(fileBytes, 0, fileBytes.Length);
 
-                    UpdateChat("File sent: " + filePath);
+                    UpdateChat("File sent: " + compressedFilePath);
+
+                    // Clean up the compressed file after sending
+                    if (File.Exists(compressedFilePath))
+                    {
+                        File.Delete(compressedFilePath);
+                    }
                 }
                 else
                 {

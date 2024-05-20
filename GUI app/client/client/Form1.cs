@@ -1,10 +1,6 @@
-using System;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace client
 {
@@ -286,42 +282,61 @@ namespace client
 
                 playStream.Enabled = false;
 
-                // Receive the video file from the server
+                // Receive the video stream from the server
                 NetworkStream ns = client.GetStream();
-                byte[] videoBytes = new byte[1024]; // Buffer to hold video bytes
-                int bytesRead;
-                using (MemoryStream ms = new MemoryStream())
+                byte[] buffer = new byte[4096]; // Buffer to hold incoming data
+
+                // Continuously read data from the stream
+                while (client.Connected)
                 {
-                    while ((bytesRead = await ns.ReadAsync(videoBytes, 0, videoBytes.Length)) > 0)
+                    using (MemoryStream ms = new MemoryStream())
                     {
-                        ms.Write(videoBytes, 0, bytesRead);
+                        int bytesRead;
+                        while ((bytesRead = await ns.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                        {
+                            ms.Write(buffer, 0, bytesRead);
+                            if (IsEndOfFrame(buffer, bytesRead))
+                            {
+                                break;
+                            }
+                        }
+
+                        // Convert the byte array to an image and display it
+                        ms.Seek(0, SeekOrigin.Begin);
+                        Image image = Image.FromStream(ms);
+                        pictureBox1.Invoke((MethodInvoker)delegate
+                        {
+                            pictureBox1.Image = image;
+                        });
                     }
-                    ms.Seek(0, SeekOrigin.Begin); // Reset memory stream position
-
-                    // Save video bytes to a temporary file
-                    string tempFilePath = Path.GetTempFileName();
-                    File.WriteAllBytes(tempFilePath, ms.ToArray());
-
-                    // Launch VLC to play the video from the temporary file
-                    ProcessStartInfo startInfo = new ProcessStartInfo
-                    {
-                        FileName = "C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe",
-                        Arguments = tempFilePath, // Provide the temporary file path to VLC
-                        UseShellExecute = true
-                    };
-
-                    Process.Start(startInfo);
                 }
 
                 // Close the connection with the server
                 client.Close();
             }
+            catch (IOException ex)
+            {
+                // Log the exception details
+                Console.WriteLine("IOException while playing stream: " + ex.ToString());
+            }
+            catch (SocketException ex)
+            {
+                // Log the exception details
+                Console.WriteLine("SocketException while playing stream: " + ex.ToString());
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Error playing stream: " + ex.Message);
+                // Log the exception details
+                Console.WriteLine("Error playing stream: " + ex.ToString());
             }
         }
 
+
+        private bool IsEndOfFrame(byte[] buffer, int bytesRead)
+        {
+            // Check for end of frame marker or condition
+            return bytesRead < buffer.Length;
+        }
 
 
     }

@@ -15,3 +15,10 @@ D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.
 D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\client.pdb
 D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\client.genruntimeconfig.cache
 D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\ref\client.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\client.csproj.AssemblyReference.cache
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\OpenCvSharp.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\runtimes\win-x64\native\OpenCvSharpExtern.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\runtimes\win-x64\native\opencv_videoio_ffmpeg490_64.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\runtimes\win-x86\native\OpenCvSharpExtern.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\runtimes\win-x86\native\opencv_videoio_ffmpeg490.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\client.csproj.Up2Date

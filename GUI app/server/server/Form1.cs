@@ -1,8 +1,8 @@
-using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Windows.Forms;
+using OpenCvSharp;
+
 
 namespace server
 {
@@ -276,15 +276,19 @@ namespace server
             }
         }
 
-        private void StartVlcStream()
+        private Socket _server;
+        private VideoCapture _capture;
+        private readonly List<Socket> _clients = new List<Socket>();
+
+        private void StartVStream()
         {
             // Establish server socket
             try
             {
                 IPEndPoint ipep = new IPEndPoint(IPAddress.Any, 1234); // Listen on any available IP address
-                Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                server.Bind(ipep);
-                server.Listen(10);
+                _server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                _server.Bind(ipep);
+                _server.Listen(10);
 
                 listenStr.Enabled = false;
 
@@ -293,10 +297,22 @@ namespace server
                 {
                     while (true)
                     {
-                        Socket client = await server.AcceptAsync();
-                        HandleVLCClient(client);
+                        Socket client = await _server.AcceptAsync();
+                        _clients.Add(client); // Add client to the list
+                        Task.Run(() => HandleVClient(client));
                     }
                 });
+
+                // Initialize webcam capture
+                _capture = new VideoCapture(0);
+                if (!_capture.IsOpened())
+                {
+                    MessageBox.Show("Failed to open webcam.");
+                    return;
+                }
+
+                // Start capturing frames and sending them to clients
+                Task.Run(CaptureAndSendFrames);
             }
             catch (Exception ex)
             {
@@ -304,30 +320,87 @@ namespace server
             }
         }
 
-        private async void HandleVLCClient(Socket client)
+        private async Task CaptureAndSendFrames()
+        {
+            try
+            {
+                while (_server.IsBound)
+                {
+                    Mat frame = new Mat();
+                    _capture.Read(frame); // Read a frame from the webcam
+
+                    if (!frame.Empty())
+                    {
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            // Encode frame as JPEG
+                            byte[] imageData = frame.ImEncode(".jpg", new ImageEncodingParam(ImwriteFlags.JpegQuality, 100)); // Use 100 as the quality value
+
+                            foreach (Socket client in _clients.ToList())
+                            {
+                                if (client.Connected)
+                                {
+                                    await client.SendAsync(imageData, SocketFlags.None); // Send frame to each connected client
+                                }
+                                else
+                                {
+                                    _clients.Remove(client); // Remove disconnected client
+                                    client.Dispose(); // Dispose the socket
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error capturing and sending frames: " + ex.Message);
+            }
+        }
+
+        private async void HandleVClient(Socket client)
         {
             try
             {
                 // Read client request
                 NetworkStream ns = new NetworkStream(client);
-                StreamReader sr = new StreamReader(ns, Encoding.UTF8);
 
-                // Send the video file to the client
-                string videoFilePath = "D:\\Collage\\8th\\Network Programming\\Project\\test.mp4";
-                byte[] videoBytes = File.ReadAllBytes(videoFilePath);
-                await ns.WriteAsync(videoBytes, 0, videoBytes.Length);
-                
-                // Close the connection
-                client.Close();
+                // Continuously capture frames and send them to the client
+                while (true)
+                {
+                    using (Mat frame = new Mat())
+                    {
+                        if (_capture !=  null) 
+                            _capture.Read(frame); // Read a frame from the webcam
+
+                        if (!frame.Empty())
+                        {
+                            using (MemoryStream ms = new MemoryStream())
+                            {
+                                // Encode frame as JPEG
+                                byte[] imageData = frame.ImEncode(".jpg", new ImageEncodingParam(ImwriteFlags.JpegQuality, 100)); // Use 100 as the quality value
+
+                                // Send frame to the client
+                                await ns.WriteAsync(imageData, 0, imageData.Length);
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error handling client: " + ex.Message);
             }
+            finally
+            {
+                // Close the connection and release resources
+                client.Close();
+            }
         }
+
         private void listenStr_Click(object sender, EventArgs e)
         {
-            StartVlcStream();
+            StartVStream();
         }
     }
 }

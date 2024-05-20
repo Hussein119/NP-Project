@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "QzlWkemP2GpLR1qkYUTN+wtdtg1zzRgKXrQLsQGV67bVRqCDfwqWCTCQ48P0iEO3CwF+8P2jkA6CkAYZtc1oRQ==",
+  "dgSpecHash": "HlCohrHf0MZl+NF9RHqZ4/XBrHZ4mzB1TCWVtH4lWo4cptZXjZNSrtJ6Z+ADbuqbYskO38qU293GxfWblc80mQ==",
   "success": true,
   "projectFilePath": "D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\client\\client\\client.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Hos10\\.nuget\\packages\\opencvsharp4\\4.9.0.20240103\\opencvsharp4.4.9.0.20240103.nupkg.sha512",
+    "C:\\Users\\Hos10\\.nuget\\packages\\opencvsharp4.runtime.win\\4.9.0.20240103\\opencvsharp4.runtime.win.4.9.0.20240103.nupkg.sha512",
+    "C:\\Users\\Hos10\\.nuget\\packages\\system.memory\\4.5.5\\system.memory.4.5.5.nupkg.sha512",
+    "C:\\Users\\Hos10\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

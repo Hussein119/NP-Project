@@ -39,6 +39,8 @@
             label5 = new Label();
             playStream = new Button();
             label3 = new Label();
+            pictureBox1 = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // ChatArea
@@ -145,12 +147,21 @@
             label3.TabIndex = 12;
             label3.Text = "3- if you want to get a files on a directory from the server enter: download directory: PATH";
             // 
+            // pictureBox1
+            // 
+            pictureBox1.Location = new Point(982, 12);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(475, 526);
+            pictureBox1.TabIndex = 13;
+            pictureBox1.TabStop = false;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.Lime;
-            ClientSize = new Size(1022, 550);
+            BackColor = Color.White;
+            ClientSize = new Size(1469, 550);
+            Controls.Add(pictureBox1);
             Controls.Add(label3);
             Controls.Add(playStream);
             Controls.Add(label5);
@@ -164,6 +175,7 @@
             Controls.Add(ChatArea);
             Name = "Form1";
             Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -181,5 +193,6 @@
         private Label label5;
         private Button playStream;
         private Label label3;
+        private PictureBox pictureBox1;
     }
 }

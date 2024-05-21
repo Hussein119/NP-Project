@@ -49,6 +49,10 @@
               "target": "Package",
               "version": "[2.2.1, )"
             },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
             "OpenCvSharp4": {
               "target": "Package",
               "version": "[4.9.0.20240103, )"

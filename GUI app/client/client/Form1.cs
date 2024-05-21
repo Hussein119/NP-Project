@@ -1,8 +1,10 @@
 using System.IO.Compression;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using NAudio.Wave;
+using Newtonsoft.Json;
 
 namespace client
 {
@@ -204,6 +206,9 @@ namespace client
                     File.Delete(compressedFilePath);
                 }
 
+                // Serialize the file
+                SerializeFile(decompressedFilePath);
+
                 // if the file is an image show the image in pictureBox1
                 if (type == "jpg" || type == "jpeg" || type == "png")
                 {
@@ -223,6 +228,49 @@ namespace client
                 MessageBox.Show("Error receiving the file: " + ex.Message);
             }
         }
+
+        private void SerializeFile(string filePath)
+        {
+            try
+            {
+                // Read the file contents as bytes
+                byte[] fileBytes = File.ReadAllBytes(filePath);
+                // Convert the bytes to base64 string for JSON serialization
+                string base64String = Convert.ToBase64String(fileBytes);
+
+                // Serialize the base64 string to JSON format
+                string jsonData = JsonConvert.SerializeObject(base64String);
+
+                // Write the JSON data to a file
+                File.WriteAllText("serialized_file.json", jsonData);
+
+                UpdateChat("File serialized: serialized_file.json");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error serializing the file: " + ex.Message);
+            }
+        }
+
+        //private void SerializeBFile(string filePath)
+        //{
+        //    try
+        //    {
+        //        // Create a FileStream to write the serialized data to the file
+        //        using (FileStream fs = new FileStream("serialized_file.bin", FileMode.Create))
+        //        {
+        //            // Create a BinaryFormatter object to perform the serialization
+        //            BinaryFormatter formatter = new BinaryFormatter();
+        //            // Serialize the file and write it to the FileStream
+        //            formatter.Serialize(fs, File.ReadAllBytes(filePath));
+        //        }
+        //        UpdateChat("File serialized: serialized_file.bin");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("Error serializing the file: " + ex.Message);
+        //    }
+        //}
 
         private void ReceiveDirectory()
         {

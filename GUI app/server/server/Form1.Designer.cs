@@ -33,6 +33,8 @@
             send = new Button();
             listen = new Button();
             listenStr = new Button();
+            label1 = new Label();
+            listBox1 = new ListBox();
             SuspendLayout();
             // 
             // ChatArea
@@ -84,12 +86,32 @@
             listenStr.UseVisualStyleBackColor = true;
             listenStr.Click += listenStr_Click;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 15F);
+            label1.Location = new Point(822, 28);
+            label1.Name = "label1";
+            label1.Size = new Size(148, 35);
+            label1.TabIndex = 5;
+            label1.Text = "Pick a Client";
+            // 
+            // listBox1
+            // 
+            listBox1.FormattingEnabled = true;
+            listBox1.Location = new Point(822, 68);
+            listBox1.Name = "listBox1";
+            listBox1.Size = new Size(150, 464);
+            listBox1.TabIndex = 6;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
-            ClientSize = new Size(806, 570);
+            ClientSize = new Size(1032, 560);
+            Controls.Add(listBox1);
+            Controls.Add(label1);
             Controls.Add(listenStr);
             Controls.Add(listen);
             Controls.Add(send);
@@ -108,5 +130,7 @@
         private Button send;
         private Button listen;
         private Button listenStr;
+        private Label label1;
+        private ListBox listBox1;
     }
 }

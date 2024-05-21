@@ -34,3 +34,4 @@ D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.
 D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\NAudio.Wasapi.dll
 D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\NAudio.WinForms.dll
 D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\NAudio.WinMM.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\Newtonsoft.Json.dll

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using NAudio.Wave;
+using OpenCvSharp.XFeatures2D;
 
 namespace server
 {
@@ -39,6 +40,7 @@ namespace server
                 while (true)
                 {
                     Socket client = await Task.Run(() => server.Accept());
+                    listBox1.Items.Add("Client #" + nextClientId.ToString());
                     clientIds[client] = nextClientId++;
 
                     _clients.Add(client);
@@ -256,15 +258,40 @@ namespace server
         {
             try
             {
-                foreach (var client in clientIds.Keys)
-                {
-                    SendMessageToClient(client, message);
-                }
+                Socket client = Find(listBox1.SelectedItem.ToString());
+
+                SendMessageToClient(client, message);
+
+                // broadcast to all clients
+                //foreach (var client in clientIds.Keys)
+                //{
+                //    SendMessageToClient(client, message);
+                //}
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error sending message to clients: " + ex.Message);
             }
+        }
+
+        private Socket Find(string from)
+        {
+            // Assuming "Client #" is always present in the string format
+            int startIndex = from.IndexOf("#") + 1; // Get the index after "#"
+            int endIndex = from.Length; // Get the index of the end of the string
+            string idString = from.Substring(startIndex, endIndex - startIndex); // Extract the ID part as a string
+            int id;
+
+            if (int.TryParse(idString, out id))
+            {
+                foreach (var client in clientIds.Keys)
+                {
+                    if (clientIds[client] == id)
+                        return client;
+                }
+            }
+
+            throw new ArgumentException("Client not found");
         }
 
         private void send_Click(object sender, EventArgs e)

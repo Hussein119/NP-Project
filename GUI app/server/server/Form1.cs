@@ -340,7 +340,7 @@ namespace server
 
                         if (!frame.Empty())
                         {
-                            byte[] imageData = frame.ImEncode(".jpg", new ImageEncodingParam(ImwriteFlags.JpegQuality, 100)); // Encode frame as JPEG
+                            byte[] imageData = frame.ImEncode(".jpg", new ImageEncodingParam(ImwriteFlags.JpegQuality, 100));
 
                             // Read audio data
                             byte[] audioData = new byte[waveProvider.BufferedBytes];
@@ -353,7 +353,7 @@ namespace server
                         }
                     }
 
-                    await Task.Delay(33); // Send approximately 30 frames per second
+                    await Task.Delay(60); // Send approximately 60 frames per second
                 }
             }
             catch (Exception ex)
@@ -452,6 +452,14 @@ namespace server
 
     }
 }
+
+
+
+
+
+
+
+
 
 
 

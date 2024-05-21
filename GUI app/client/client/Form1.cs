@@ -238,6 +238,7 @@ namespace client
                 MessageBox.Show("Error receiving directory information: " + ex.Message);
             }
         }
+
         private void ReceiveDownloadDirectory()
         {
             string targetPath = "D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\client\\client\\bin\\Debug\\net8.0-windows";
@@ -332,7 +333,7 @@ namespace client
             {
                 // Connect to the server
                 TcpClient client = new TcpClient();
-                await client.ConnectAsync("127.0.0.1", 1234); // Connect to the server's IP address and port
+                await client.ConnectAsync("127.0.0.1", 1234);
 
                 playStream.Enabled = false;
 

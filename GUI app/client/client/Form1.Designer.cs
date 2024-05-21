@@ -151,7 +151,7 @@
             // 
             pictureBox1.Location = new Point(982, 12);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(475, 526);
+            pictureBox1.Size = new Size(623, 526);
             pictureBox1.TabIndex = 13;
             pictureBox1.TabStop = false;
             // 
@@ -160,7 +160,7 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(1469, 550);
+            ClientSize = new Size(1622, 576);
             Controls.Add(pictureBox1);
             Controls.Add(label3);
             Controls.Add(playStream);

@@ -22,3 +22,15 @@ D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.
 D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\runtimes\win-x86\native\OpenCvSharpExtern.dll
 D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\runtimes\win-x86\native\opencv_videoio_ffmpeg490.dll
 D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\client.csproj.Up2Date
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\Interop.WMPLib.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\AxInterop.WMPLib.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\Interop.WMPLib.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\AxInterop.WMPLib.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\obj\Debug\net8.0-windows\client.csproj.ResolveComReference.cache
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\NAudio.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\NAudio.Asio.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\NAudio.Core.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\NAudio.Midi.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\NAudio.Wasapi.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\NAudio.WinForms.dll
+D:\Collage\8th\Network Programming\Project\GUI app\client\client\bin\Debug\net8.0-windows\NAudio.WinMM.dll

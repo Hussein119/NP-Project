@@ -2,6 +2,7 @@ using System.IO.Compression;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using NAudio.Wave;
 
 namespace client
 {
@@ -12,11 +13,16 @@ namespace client
         StreamReader sr;
         StreamWriter sw;
 
+        private WaveOutEvent waveOut;
+        private BufferedWaveProvider waveProvider;
+
         public Form1()
         {
             InitializeComponent();
             ChatArea.ReadOnly = true;
             directoryScreen.ReadOnly = true;
+
+            waveOut = new WaveOutEvent();
         }
 
         private async void connect_Click(object sender, EventArgs e)
@@ -171,6 +177,7 @@ namespace client
                 int bytesRead;
                 string compressedFilePath = "received_file." + type + ".gz";
                 string decompressedFilePath = "received_file." + type;
+                UpdateChat("decompressedFilePath: " + decompressedFilePath);
 
                 using (FileStream fs = new FileStream(compressedFilePath, FileMode.Create, FileAccess.Write))
                 {
@@ -234,7 +241,7 @@ namespace client
         private void ReceiveDownloadDirectory()
         {
             string targetPath = "D:\\Collage\\8th\\Network Programming\\Project\\GUI app\\client\\client\\bin\\Debug\\net8.0-windows";
-            
+
             try
             {
                 // Receive the number of files
@@ -319,7 +326,6 @@ namespace client
             }
         }
 
-
         private async void playStream_Click(object sender, EventArgs e)
         {
             try
@@ -330,37 +336,51 @@ namespace client
 
                 playStream.Enabled = false;
 
+                // Set up audio playback
+                waveProvider = new BufferedWaveProvider(new WaveFormat(44100, 1)); // 44.1kHz, mono
+                waveOut.Init(waveProvider);
+                waveOut.Play();
+
                 // Receive the video stream from the server
                 NetworkStream ns = client.GetStream();
-                byte[] buffer = new byte[4096]; // Buffer to hold incoming data
+                byte[] lengthBuffer = new byte[4]; // Buffer to hold length data
 
                 // Continuously read data from the stream
                 while (client.Connected)
                 {
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        int bytesRead;
-                        while ((bytesRead = await ns.ReadAsync(buffer, 0, buffer.Length)) > 0)
-                        {
-                            ms.Write(buffer, 0, bytesRead);
-                            if (IsEndOfFrame(buffer, bytesRead))
-                            {
-                                break;
-                            }
-                        }
+                    // Read video data length
+                    await ReadFullBuffer(ns, lengthBuffer, 0, lengthBuffer.Length);
+                    int videoDataLength = BitConverter.ToInt32(lengthBuffer, 0);
 
-                        // Convert the byte array to an image and display it
-                        ms.Seek(0, SeekOrigin.Begin);
+                    // Read video data
+                    byte[] videoData = new byte[videoDataLength];
+                    await ReadFullBuffer(ns, videoData, 0, videoData.Length);
+
+                    // Read audio data length
+                    await ReadFullBuffer(ns, lengthBuffer, 0, lengthBuffer.Length);
+                    int audioDataLength = BitConverter.ToInt32(lengthBuffer, 0);
+
+                    // Read audio data
+                    byte[] audioData = new byte[audioDataLength];
+                    await ReadFullBuffer(ns, audioData, 0, audioData.Length);
+
+                    // Process and display video frame
+                    using (MemoryStream ms = new MemoryStream(videoData))
+                    {
                         Image image = Image.FromStream(ms);
                         pictureBox1.Invoke((MethodInvoker)delegate
                         {
                             pictureBox1.Image = image;
                         });
                     }
+
+                    // Play audio data
+                    waveProvider.AddSamples(audioData, 0, audioData.Length);
                 }
 
                 // Close the connection with the server
                 client.Close();
+                waveOut.Stop();
             }
             catch (IOException ex)
             {
@@ -379,13 +399,85 @@ namespace client
             }
         }
 
-
-        private bool IsEndOfFrame(byte[] buffer, int bytesRead)
+        private async Task ReadFullBuffer(NetworkStream ns, byte[] buffer, int offset, int count)
         {
-            // Check for end of frame marker or condition
-            return bytesRead < buffer.Length;
+            int totalRead = 0;
+            while (totalRead < count)
+            {
+                int bytesRead = await ns.ReadAsync(buffer, offset + totalRead, count - totalRead);
+                if (bytesRead == 0)
+                {
+                    throw new IOException("Connection closed while reading data.");
+                }
+                totalRead += bytesRead;
+            }
         }
 
+
+        //private async void playStream_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        // Connect to the server
+        //        TcpClient client = new TcpClient();
+        //        await client.ConnectAsync("127.0.0.1", 1234); // Connect to the server's IP address and port
+
+        //        playStream.Enabled = false;
+
+        //        // Receive the video stream from the server
+        //        NetworkStream ns = client.GetStream();
+        //        byte[] buffer = new byte[4096]; // Buffer to hold incoming data
+
+        //        // Continuously read data from the stream
+        //        while (client.Connected)
+        //        {
+        //            using (MemoryStream ms = new MemoryStream())
+        //            {
+        //                int bytesRead;
+        //                while ((bytesRead = await ns.ReadAsync(buffer, 0, buffer.Length)) > 0)
+        //                {
+        //                    ms.Write(buffer, 0, bytesRead);
+        //                    if (IsEndOfFrame(buffer, bytesRead))
+        //                    {
+        //                        break;
+        //                    }
+        //                }
+
+        //                // Convert the byte array to an image and display it
+        //                ms.Seek(0, SeekOrigin.Begin);
+        //                Image image = Image.FromStream(ms);
+        //                pictureBox1.Invoke((MethodInvoker)delegate
+        //                {
+        //                    pictureBox1.Image = image;
+        //                });
+        //            }
+        //        }
+
+        //        // Close the connection with the server
+        //        client.Close();
+        //    }
+        //    catch (IOException ex)
+        //    {
+        //        // Log the exception details
+        //        Console.WriteLine("IOException while playing stream: " + ex.ToString());
+        //    }
+        //    catch (SocketException ex)
+        //    {
+        //        // Log the exception details
+        //        Console.WriteLine("SocketException while playing stream: " + ex.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception details
+        //        Console.WriteLine("Error playing stream: " + ex.ToString());
+        //    }
+        //}
+
+        //private bool IsEndOfFrame(byte[] buffer, int bytesRead)
+        //{
+        //    // Check for end of frame marker or condition
+        //    return bytesRead < buffer.Length;
+        //}
 
     }
 }

@@ -32,7 +32,7 @@
             MessageArea = new TextBox();
             send = new Button();
             listen = new Button();
-            listenStr = new Button();
+            lStream = new Button();
             label1 = new Label();
             listBox1 = new ListBox();
             close = new Button();
@@ -76,24 +76,24 @@
             listen.UseVisualStyleBackColor = true;
             listen.Click += listen_Click;
             // 
-            // listenStr
+            // lStream
             // 
-            listenStr.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            listenStr.Location = new Point(645, 130);
-            listenStr.Name = "listenStr";
-            listenStr.Size = new Size(130, 67);
-            listenStr.TabIndex = 4;
-            listenStr.Text = "listenStr";
-            listenStr.UseVisualStyleBackColor = true;
-            listenStr.Click += listenStr_Click;
+            lStream.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lStream.Location = new Point(645, 130);
+            lStream.Name = "lStream";
+            lStream.Size = new Size(130, 67);
+            lStream.TabIndex = 4;
+            lStream.Text = "lStream";
+            lStream.UseVisualStyleBackColor = true;
+            lStream.Click += lStream_Click;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 15F);
+            label1.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.Location = new Point(822, 28);
             label1.Name = "label1";
-            label1.Size = new Size(148, 35);
+            label1.Size = new Size(159, 35);
             label1.TabIndex = 5;
             label1.Text = "Pick a Client";
             // 
@@ -125,7 +125,7 @@
             Controls.Add(close);
             Controls.Add(listBox1);
             Controls.Add(label1);
-            Controls.Add(listenStr);
+            Controls.Add(lStream);
             Controls.Add(listen);
             Controls.Add(send);
             Controls.Add(MessageArea);
@@ -142,7 +142,7 @@
         private TextBox MessageArea;
         private Button send;
         private Button listen;
-        private Button listenStr;
+        private Button lStream;
         private Label label1;
         private ListBox listBox1;
         private Button close;

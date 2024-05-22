@@ -352,7 +352,7 @@ namespace server
         private WaveInEvent waveIn;
         private BufferedWaveProvider waveProvider;
 
-        private async void listenStr_Click(object sender, EventArgs e)
+        private async void lStream_Click(object sender, EventArgs e)
         {
             await StartVStream();
         }
@@ -379,7 +379,7 @@ namespace server
                 _server.Bind(ipep);
                 _server.Listen(10);
 
-                listenStr.Enabled = false;
+                lStream.Enabled = false;
 
                 while (true)
                 {

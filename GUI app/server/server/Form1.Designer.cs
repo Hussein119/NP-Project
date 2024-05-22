@@ -35,6 +35,7 @@
             listenStr = new Button();
             label1 = new Label();
             listBox1 = new ListBox();
+            close = new Button();
             SuspendLayout();
             // 
             // ChatArea
@@ -58,7 +59,7 @@
             send.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point, 0);
             send.Location = new Point(645, 465);
             send.Name = "send";
-            send.Size = new Size(119, 67);
+            send.Size = new Size(130, 67);
             send.TabIndex = 2;
             send.Text = "send";
             send.UseVisualStyleBackColor = true;
@@ -69,7 +70,7 @@
             listen.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point, 0);
             listen.Location = new Point(645, 12);
             listen.Name = "listen";
-            listen.Size = new Size(119, 67);
+            listen.Size = new Size(130, 67);
             listen.TabIndex = 3;
             listen.Text = "listen";
             listen.UseVisualStyleBackColor = true;
@@ -78,9 +79,9 @@
             // listenStr
             // 
             listenStr.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            listenStr.Location = new Point(645, 113);
+            listenStr.Location = new Point(645, 130);
             listenStr.Name = "listenStr";
-            listenStr.Size = new Size(128, 67);
+            listenStr.Size = new Size(130, 67);
             listenStr.TabIndex = 4;
             listenStr.Text = "listenStr";
             listenStr.UseVisualStyleBackColor = true;
@@ -104,12 +105,24 @@
             listBox1.Size = new Size(150, 464);
             listBox1.TabIndex = 6;
             // 
+            // close
+            // 
+            close.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            close.Location = new Point(645, 262);
+            close.Name = "close";
+            close.Size = new Size(130, 67);
+            close.TabIndex = 7;
+            close.Text = "close";
+            close.UseVisualStyleBackColor = true;
+            close.Click += close_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
             ClientSize = new Size(1032, 560);
+            Controls.Add(close);
             Controls.Add(listBox1);
             Controls.Add(label1);
             Controls.Add(listenStr);
@@ -132,5 +145,6 @@
         private Button listenStr;
         private Label label1;
         private ListBox listBox1;
+        private Button close;
     }
 }

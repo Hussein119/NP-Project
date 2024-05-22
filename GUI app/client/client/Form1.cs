@@ -252,6 +252,27 @@ namespace client
             }
         }
 
+        private void DeserializeFile(string jsonFilePath, string outputFilePath)
+        {
+            try
+            {
+                string jsonData = File.ReadAllText(jsonFilePath);
+
+                string base64String = JsonConvert.DeserializeObject<string>(jsonData);
+
+                byte[] fileBytes = Convert.FromBase64String(base64String);
+
+                File.WriteAllBytes(outputFilePath, fileBytes);
+
+                UpdateChat("File deserialized: " + outputFilePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error deserializing the file: " + ex.Message);
+            }
+        }
+
+
         //private void SerializeBFile(string filePath)
         //{
         //    try
@@ -462,6 +483,26 @@ namespace client
             }
         }
 
+        private void close_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SendMessage("disconnect");
+
+                if (sw != null) sw.Close();
+                if (sr != null) sr.Close();
+                if (ns != null) ns.Close();
+                if (server != null) server.Close();
+
+                connect.Enabled = true;
+
+                UpdateChat("Disconnected from server.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error disconnecting from server: " + ex.Message);
+            }
+        }
 
         //private async void playStream_Click(object sender, EventArgs e)
         //{

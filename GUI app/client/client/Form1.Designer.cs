@@ -40,6 +40,7 @@
             playStream = new Button();
             label3 = new Label();
             pictureBox1 = new PictureBox();
+            close = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -155,12 +156,24 @@
             pictureBox1.TabIndex = 13;
             pictureBox1.TabStop = false;
             // 
+            // close
+            // 
+            close.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            close.Location = new Point(822, 12);
+            close.Name = "close";
+            close.Size = new Size(123, 77);
+            close.TabIndex = 14;
+            close.Text = "close";
+            close.UseVisualStyleBackColor = true;
+            close.Click += close_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1622, 576);
+            Controls.Add(close);
             Controls.Add(pictureBox1);
             Controls.Add(label3);
             Controls.Add(playStream);
@@ -194,5 +207,6 @@
         private Button playStream;
         private Label label3;
         private PictureBox pictureBox1;
+        private Button close;
     }
 }

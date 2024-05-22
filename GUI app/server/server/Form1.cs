@@ -92,6 +92,9 @@ namespace server
                         SendMessageToClient(client, message);
 
                         SendDirectory(client, directoryPath);
+                    } else if (tmp.StartsWith("disconnect"))
+                    {
+                        RemoveClient(client);
                     }
                     else
                     {
@@ -105,6 +108,38 @@ namespace server
                 MessageBox.Show("Error receiving message from client: " + ex.Message);
             }
         }
+
+        private void RemoveClient(Socket client)
+        {
+            try
+            {
+                if (clientIds.ContainsKey(client))
+                {
+                    int clientId = clientIds[client];
+                    clientIds.Remove(client);
+                    _clients.Remove(client);
+
+                    if (listBox1.InvokeRequired)
+                    {
+                        listBox1.Invoke(new Action(() => listBox1.Items.Remove("Client #" + clientId)));
+                    }
+                    else
+                    {
+                        listBox1.Items.Remove("Client #" + clientId);
+                    }
+
+                    client.Shutdown(SocketShutdown.Both);
+                    client.Close();
+
+                    UpdateChat("Client #" + clientId + " disconnected.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error removing client: " + ex.Message);
+            }
+        }
+
 
         private void SendMessageToClient(Socket client, string message)
         {
@@ -258,15 +293,21 @@ namespace server
         {
             try
             {
-                Socket client = Find(listBox1.SelectedItem.ToString());
+                if (listBox1.SelectedItem == null)
+                {
+                    // broadcast to all clients
+                    foreach (var client in clientIds.Keys)
+                    {
+                        SendMessageToClient(client, message);
+                    }
+                }
+                else
+                {
+                    Socket spacificClient = Find(listBox1.SelectedItem.ToString());
 
-                SendMessageToClient(client, message);
-
-                // broadcast to all clients
-                //foreach (var client in clientIds.Keys)
-                //{
-                //    SendMessageToClient(client, message);
-                //}
+                    SendMessageToClient(spacificClient, message);
+                }
+          
             }
             catch (Exception ex)
             {
@@ -406,6 +447,49 @@ namespace server
                 }
                 return ms.ToArray();
             }
+        }
+
+        private void close_Click(object sender, EventArgs e)
+        {
+            if (server != null)
+            {
+                server.Close();
+                server = null;
+            }
+
+            if (_server != null)
+            {
+                _server.Close();
+                _server = null;
+            }
+
+            foreach (var client in _clients)
+            {
+                client.Close();
+            }
+            _clients.Clear();
+
+            clientIds.Clear();
+            listBox1.Items.Clear();
+            ChatArea.Clear();
+
+            if (_capture != null)
+            {
+                _capture.Release();
+                _capture.Dispose();
+                _capture = null;
+            }
+
+            if (waveIn != null)
+            {
+                waveIn.StopRecording();
+                waveIn.Dispose();
+                waveIn = null;
+            }
+
+            waveProvider = null;
+
+            listen.Enabled = true;
         }
 
         //private async void listenStr_Click(object sender, EventArgs e)
